@@ -1,5 +1,11 @@
 package client
 
+import (
+	"time"
+
+	"github.com/ethereum/go-ethereum/common"
+)
+
 type Response[T any] struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
@@ -26,4 +32,18 @@ type Transaction struct {
 	Status           int     `json:"status"`
 	ContractCreated  *string `json:"contractCreated"`
 	Method           string  `json:"method"`
+}
+
+type PosAccountOverview struct {
+	Address             common.Hash `json:"address"`
+	Byte32NameTagInfo   *string     `json:"byte32NameTagInfo"`
+	CreatedAt           time.Time   `json:"createdAt"`
+	Type                string      `json:"type"`
+	Status              string      `json:"status"`
+	AvailableVotesInCfx int         `json:"availableVotesInCfx"`
+	WithdrawableInCfx   int         `json:"withdrawableInCfx"`
+	LockingInCfx        int         `json:"lockingInCfx"`
+	UnlockingInCfx      int         `json:"unlockingInCfx"`
+	ForceRetired        *string     `json:"forceRetired"`
+	TotalReward         string      `json:"totalReward"`
 }
