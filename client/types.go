@@ -35,15 +35,18 @@ type Transaction struct {
 }
 
 type PosAccountOverview struct {
-	Address             common.Hash `json:"address"`
-	Byte32NameTagInfo   *string     `json:"byte32NameTagInfo"`
-	CreatedAt           time.Time   `json:"createdAt"`
-	Type                string      `json:"type"`
-	Status              string      `json:"status"`
-	AvailableVotesInCfx int         `json:"availableVotesInCfx"`
-	WithdrawableInCfx   int         `json:"withdrawableInCfx"`
-	LockingInCfx        int         `json:"lockingInCfx"`
-	UnlockingInCfx      int         `json:"unlockingInCfx"`
-	ForceRetired        *string     `json:"forceRetired"`
-	TotalReward         string      `json:"totalReward"`
+	Address           common.Hash `json:"address"`
+	Byte32NameTagInfo *struct {
+		NameTag string `json:"nameTag"`
+		WebSite string `json:"website"`
+	} `json:"byte32NameTagInfo"`
+	CreatedAt           time.Time `json:"createdAt"`
+	Type                string    `json:"type"`
+	Status              string    `json:"status"`
+	AvailableVotesInCfx int       `json:"availableVotesInCfx"`
+	WithdrawableInCfx   int       `json:"withdrawableInCfx"`
+	LockingInCfx        int       `json:"lockingInCfx"`
+	UnlockingInCfx      int       `json:"unlockingInCfx"`
+	ForceRetired        *string   `json:"forceRetired"`
+	TotalReward         string    `json:"totalReward"`
 }
