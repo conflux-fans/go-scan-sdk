@@ -104,3 +104,59 @@ func (c *Client) GetPosAccountOverview(posAddress common.Hash) (*PosAccountOverv
 
 	return data.Data, nil
 }
+
+// curl 'https://confluxscan.io/stat/list-pos-account-reward?identifier=0xae888cc930f28bd81c22f3783f615d03701363a06ad24b90aca5ef5a15d758b0&limit=100&orderBy=createdAt&reverse=true&skip=0&tab=incoming-history' \
+
+// response:
+//
+//	{
+//	    "code": 0,
+//	    "message": "",
+//	    "data": {
+//	        "total": 9,
+//	        "list": [
+//	            {
+//	                "id": 1103382,
+//	                "accountId": 346,
+//	                "reward": "25461007150987062915",
+//	                "createdAt": "2024-12-10T09:48:32.000Z",
+//	                "epoch": 30824,
+//	                "powBlockHash": "0x3c4769e32bd3b8e58c17c5460379c5270a802af4756dd561b95b366749aaa31f"
+//	            }
+//	        ],
+//	        "listLimit": 10000
+//	    }
+//	}
+func (c *Client) GetPosAccountReward(identifier common.Hash, tab string) (*List[*PosAccountReward], error) {
+	queryParams := map[string]string{
+		"identifier": identifier.Hex(),
+		"skip":       "0",
+		"tab":        tab,
+		"limit":      "100",
+	}
+
+	logrus.WithField("queryParams", queryParams).Info("[Scan Client] get pos account reward")
+
+	resp, err := c.inner.R().
+		SetQueryParams(queryParams).
+		SetHeader("Accept", "application/json").
+		Get(c.url("/stat/list-pos-account-reward"))
+	if err != nil {
+		return nil, err
+	}
+
+	var data Response[*List[*PosAccountReward]]
+	if err := json.Unmarshal(resp.Body(), &data); err != nil {
+		return nil, err
+	}
+
+	if data.Code != constants.RESPONSOE_CODE_OK {
+		return nil, errors.New(fmt.Sprintf("code: %d, message: %s", data.Code, data.Message))
+	}
+
+	return data.Data, nil
+}
+
+func (c *Client) GetPosAccountRewardIncomingHistory(posAddress common.Hash) (*List[*PosAccountReward], error) {
+	return c.GetPosAccountReward(posAddress, "incoming-history")
+}

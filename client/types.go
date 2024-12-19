@@ -50,3 +50,12 @@ type PosAccountOverview struct {
 	ForceRetired        *string   `json:"forceRetired"`
 	TotalReward         string    `json:"totalReward"`
 }
+
+type PosAccountReward struct {
+	ID           int         `json:"id"`
+	AccountID    int         `json:"accountId"`
+	Reward       string      `json:"reward"`
+	CreatedAt    time.Time   `json:"createdAt"`
+	Epoch        int         `json:"epoch"`
+	PowBlockHash common.Hash `json:"powBlockHash"`
+}

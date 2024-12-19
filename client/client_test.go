@@ -29,6 +29,17 @@ func TestGetPosAccountOverview(t *testing.T) {
 	fmt.Println(overview)
 }
 
+func TestGetPosAccountReward(t *testing.T) {
+	client := NewClient("https://confluxscan.io")
+	reward, err := client.GetPosAccountReward(common.HexToHash("0xae888cc930f28bd81c22f3783f615d03701363a06ad24b90aca5ef5a15d758b0"), "incoming-history")
+	assert.Nil(t, err)
+	assert.NotNil(t, reward)
+	fmt.Println(reward.Total)
+	for _, r := range reward.List {
+		fmt.Println(r.ID, r.AccountID, r.Reward, r.CreatedAt, r.Epoch, r.PowBlockHash.Hex())
+	}
+}
+
 func TestUrl(t *testing.T) {
 	client := NewClient("https://api.confluxscan.io")
 	assert.Equal(t, "https://api.confluxscan.io/account/transactions", client.url("/account/transactions"))
